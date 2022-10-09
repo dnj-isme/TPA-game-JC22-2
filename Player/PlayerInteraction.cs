@@ -114,6 +114,7 @@ public class PlayerInteraction : MonoBehaviour
                 // if the character haven't attack yet, start attack animation
                 if (attack == false)
                 {
+                    Attack();
                     sFXManager.PlayAttack();
                     attack = true;
                     animator.SetTrigger("Attack");
@@ -128,8 +129,7 @@ public class PlayerInteraction : MonoBehaviour
             // if we give the attack command and the attack animation is over
             if (attack && (animation1Finished || animation2Finished))
             {
-                // 1. do some damage
-                Attack();
+                // 1. set cooldown
                 lastAttackCount++;
                 attack = false;
                 cooldown = true;
@@ -138,6 +138,7 @@ public class PlayerInteraction : MonoBehaviour
                 // if attack again, cancel the cooldown and the attack change state
                 if (attackAgain)
                 {
+                    Attack();
                     if (lastAttackCount < usedWeapon.AttackTimes) sFXManager.PlayAttack();
                     attack = true;
                     cooldown = false;
@@ -178,7 +179,10 @@ public class PlayerInteraction : MonoBehaviour
         rb.useGravity = true;
         rb.isKinematic = false;
 
-        @object.GetComponent<MeshCollider>().enabled = true;
+        MeshCollider col = @object.GetComponent<MeshCollider>();
+
+        col.isTrigger = false;
+        col.enabled = true;
         @object.tag = "Weapon";
     }
 
@@ -195,7 +199,10 @@ public class PlayerInteraction : MonoBehaviour
             rb.useGravity = false;
             rb.isKinematic = true;
 
-            @object.GetComponent<MeshCollider>().enabled = false;
+            MeshCollider col = @object.GetComponent<MeshCollider>();
+
+            col.isTrigger = true;
+            col.enabled = false;
 
             @object.transform.localPosition = Vector3.zero;
             @object.transform.localRotation = Quaternion.identity;
@@ -220,6 +227,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         foreach (GameObject enemy in diedTargets)
         {
+            sFXManager.PlayBearDeath();
             playerStats.AddXP(enemy.GetComponent<EnemyStats>().XP);
             enemyTargets.Remove(enemy);
             Animator temp = enemy.GetComponent<Animator>();

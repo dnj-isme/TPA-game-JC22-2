@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private bool showSPAGui;
     [SerializeField] private GameObject sPACanvas;
+    [SerializeField] private TextMeshProUGUI basicLevelText;
     [Header("HP Slider Properties")]
     [SerializeField] private TextMeshProUGUI hpTMP;
     [SerializeField] private Slider hpSlider;
@@ -73,6 +74,7 @@ public class PlayerStats : MonoBehaviour
     }
     public void ResetUI()
     {
+        basicLevelText.text = string.Format("Level : {0}", Level);
         hpSlider.minValue = 0;
         hpSlider.maxValue = MaxHP;
         hpSlider.value = hp;
@@ -135,7 +137,9 @@ public class PlayerStats : MonoBehaviour
     public void AddStrength()
     {
         if (skillPoint <= 0) return;
+        float prevMax = MaxHP;
         strength++;
+        hp *= MaxHP / prevMax;
         skillPoint--;
         ResetUI();
     }

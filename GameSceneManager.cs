@@ -48,6 +48,19 @@ public class GameSceneManager : MonoBehaviour
         animator.SetTrigger("FadeOut");
     }
 
+    public void FadeMusic(AudioSource src) => StartCoroutine(ReduceVolume(src, 1.5f));
+
+    private IEnumerator ReduceVolume(AudioSource src, float sec)
+    {
+        float timeBetweenReduction = sec / 100f;
+        float reductionVolume = src.volume / 100f;
+        for (int i = 0; i < 100; i++)
+        {
+            yield return new WaitForSeconds(timeBetweenReduction);
+            src.volume -= reductionVolume;
+        }
+    }
+
     public void LoadMainMenuScene(float sec)
     {
         StartCoroutine(DoAction(sec, () => {

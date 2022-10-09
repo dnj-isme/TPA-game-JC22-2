@@ -54,9 +54,13 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
+        cinemachine = GameObject.FindGameObjectWithTag("Cinemachine").GetComponent<CinemachineFreeLook>();
+    }
+
+    private void Start()
+    {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        cinemachine = GameObject.FindGameObjectWithTag("Cinemachine").GetComponent<CinemachineFreeLook>();
     }
 
     // Update is called once per frame
@@ -66,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.visible = !Cursor.visible;
             Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
+            HandleAnimation();
         }
         if (Cursor.visible)
         {
@@ -78,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             cinemachine.m_XAxis.m_InputAxisName = "Mouse X";
             cinemachine.m_YAxis.m_InputAxisName = "Mouse Y";
         }
-        attack = animator.GetBool("Attack") || animator.GetBool("AttackAgain");
+        attack = animator.GetCurrentAnimatorStateInfo(0).IsName("Punch") || animator.GetCurrentAnimatorStateInfo(0).IsName("Sword Hit") || animator.GetBool("AttackAgain");
         agilityMultiplier = playerStats.Agility / 10f;
 
         if (Time.time - lastSlide >= slideDuration) slide = false;
@@ -105,18 +110,15 @@ public class PlayerMovement : MonoBehaviour
         HandleAnimation();
     }
 
-    private bool requested = false;
-
     public GameObject fadeOut;
 
     private void FixedUpdate()
     {
-        if (!playerStats.Alive && !requested)
+        if (!playerStats.Alive)
         {
             controller.Move(transform.position);
             GameSceneManager manager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameSceneManager>();
             manager.LoadGameOverScene(2);
-            fadeOut = GameObject.FindGameObjectWithTag("FadeOut");
             fadeOut.SetActive(true);
             manager.PlayFadeAnimation(fadeOut);
         }
@@ -156,3 +158,4 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("Roll", roll);
     }
 }
+    

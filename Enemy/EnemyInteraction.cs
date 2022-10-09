@@ -33,6 +33,7 @@ public class EnemyInteraction : MonoBehaviour
             // if it hasn't attack yet,  
             if(!attack)
             {
+                manager.PlayBearAttack();
                 Attack();
                 startAnim = Time.time;
                 movement.Attack = true;
