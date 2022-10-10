@@ -14,10 +14,6 @@ public class SFXManager : MonoBehaviour
     [SerializeField] private List<AudioClip> swordWoosh;
     [SerializeField] private List<AudioClip> swordHit;
 
-    [Header("Mr. Bear")]
-    [SerializeField] private AudioClip bearAttack;
-    [SerializeField] private AudioClip bearDeath;
-
     [Header("Combat Misc.")]
     [SerializeField] private List<AudioClip> levelUp;
     [SerializeField] private List<AudioClip> receiveHit;
@@ -47,10 +43,8 @@ public class SFXManager : MonoBehaviour
     public void PlaySwordHit() => PlayRandomClip(swordHit, .5f, 2);
     public void PlayLevelUp() => PlayAllClip(levelUp, .5f, 2);
     public void PlayReceiveHit() => PlayRandomClip(receiveHit, .5f, 2);
-    public void PlayBearAttack() => PlayClip(bearAttack, .5f, 2);
-    public void PlayBearDeath() => PlayClip(bearDeath, .5f, 3);
 
-    private void PlayClip(AudioClip clip, float volume, int killTime)
+    public void PlayClip(AudioClip clip, float volume, int killTime)
     {
         AudioSource temp = new GameObject().AddComponent<AudioSource>();
         temp.clip = clip;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -29,18 +30,21 @@ public class EnemySpawner : MonoBehaviour
             if(!spawned && Time.time - lastDespawned >= spawnCooldown)
             {
                 GameObject enemy = instance.GetPooledObject();
-                if (enemy != null)
-                {
-                    Vector3 randomPosition = new Vector3(Random.value * spawnRange, 0, Random.value * spawnRange);
-                    enemy.GetComponent<EnemyStats>().ResetStat().RefreshSlider();
-                    enemy.GetComponent<EnemyInteraction>().RemoveTarget();
-
-                    enemy.transform.parent = transform;
-                    enemy.transform.position = transform.position + randomPosition;
-                    enemy.SetActive(true);
-                    spawned = true;
-                }
+                if (enemy != null) Spawn(enemy);
             }
         }
+    }
+
+    private void Spawn(GameObject enemy)
+    {
+        Vector3 randomPosition = new Vector3(Random.value * spawnRange, 0, Random.value * spawnRange);
+        enemy.GetComponent<NavMeshAgent>().enabled = true;
+        enemy.GetComponent<EnemyStats>().ResetStat().RefreshSlider();
+        enemy.GetComponent<EnemyInteraction>().RemoveTarget();
+
+        enemy.transform.parent = transform;
+        enemy.transform.position = transform.position + randomPosition;
+        enemy.SetActive(true);
+        spawned = true;
     }
 }

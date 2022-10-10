@@ -9,6 +9,12 @@ public class EnemyInteraction : MonoBehaviour
     [SerializeField] private EnemyStats stat;
     [SerializeField] private EnemyMovement movement;
 
+    [Header("Enemy SFX")]
+    [SerializeField] private AudioClip enemyAttack;
+    [SerializeField] private AudioClip enemyDeath;
+
+    public void PlayDeathAudio() => manager.PlayClip(enemyDeath, .5f, 4);
+
     private SFXManager manager;
     private float startAnim = 0;
     private float startCooldown = 0;
@@ -33,7 +39,7 @@ public class EnemyInteraction : MonoBehaviour
             // if it hasn't attack yet,  
             if(!attack)
             {
-                manager.PlayBearAttack();
+                manager.PlayClip(enemyAttack, .5f, 4);
                 Attack();
                 startAnim = Time.time;
                 movement.Attack = true;

@@ -6,14 +6,14 @@ using UnityEngine.TextCore.Text;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField, Range(5, 20)] private float randomPositionTime = 10f;
-    [SerializeField, Range(5, 15)] private float randomRadius = 8;
+    [SerializeField, Range(0, 20)] private float randomPositionTime = 10f;
+    [SerializeField, Range(0, 15)] private float randomRadius = 8;
 
     private PlayerDetection detection;
     private Animator animator;
     private NavMeshAgent agent;
     private Vector3 spawnPoint;
-    private Vector3 idlePoint;
+    [SerializeField] private Vector3 idlePoint;
 
     private float lastResetPosition = 0f;
     private bool attack = false;
@@ -56,6 +56,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void SetAnimation()
     {
-        animator.SetBool("WalkForward", agent.velocity.magnitude >= 0.1f);
+        animator.SetBool("WalkForward", agent.velocity.magnitude >= 0.2f);
     }
 }

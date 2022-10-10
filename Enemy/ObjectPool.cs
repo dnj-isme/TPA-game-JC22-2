@@ -7,7 +7,7 @@ public class ObjectPool : MonoBehaviour
 {
     private static ObjectPool instance;
     public static ObjectPool Instance { get => instance; }
-    [SerializeField] private GameObject mrBear;
+    [SerializeField] private List<GameObject> prefabs;
     [SerializeField, Range(1, 100)] private int amountToPool = 5;
     [SerializeField] private List<GameObject> pooledObjects;
 
@@ -20,7 +20,7 @@ public class ObjectPool : MonoBehaviour
     {
         for(int i = 0; i < amountToPool; i++)
         {
-            GameObject obj = Instantiate(mrBear);
+            GameObject obj = Instantiate(prefabs[Random.Range(0, prefabs.Capacity)]);
             obj.SetActive(false);
             pooledObjects.Add(obj);
         }

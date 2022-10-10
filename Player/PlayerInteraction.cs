@@ -227,7 +227,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         foreach (GameObject enemy in diedTargets)
         {
-            sFXManager.PlayBearDeath();
+            enemy.GetComponent<EnemyInteraction>().PlayDeathAudio();
             playerStats.AddXP(enemy.GetComponent<EnemyStats>().XP);
             enemyTargets.Remove(enemy);
             Animator temp = enemy.GetComponent<Animator>();
